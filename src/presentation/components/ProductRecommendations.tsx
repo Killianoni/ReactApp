@@ -10,13 +10,22 @@ type Props = {
   onSelectProduct: (product: Product) => void;
 };
 
+/**
+ * Product Recommendations Component - Displays healthier alternative products
+ * 
+ * Features:
+ * - Horizontal scroll of alternative products
+ * - Automatic empty state handling
+ * - Compact card layout optimized for recommendations
+ * - Theme-aware styling
+ */
 export function ProductRecommendations({ currentProduct, recommendations, onSelectProduct }: Props) {
   const colors = useTheme();
   
   const styles = StyleSheet.create({
     container: {
       marginTop: 16,
-      marginBottom: 16, // Add bottom margin
+      marginBottom: 16,
     },
     title: {
       fontSize: 18,
@@ -43,6 +52,7 @@ export function ProductRecommendations({ currentProduct, recommendations, onSele
     <View style={styles.container}>
       <Text style={styles.title}>Higher Protein Alternatives</Text>
       {recommendations.length > 0 ? (
+        /* Recommendation scroll with optimized performance */
         <ScrollView 
           horizontal 
           showsHorizontalScrollIndicator={false}
@@ -60,6 +70,7 @@ export function ProductRecommendations({ currentProduct, recommendations, onSele
           ))}
         </ScrollView>
       ) : (
+        /* Contextual empty state message */
         <Text style={styles.emptyMessage}>
           No recommendations found among {currentProduct.product_name_fr || currentProduct.product_name_en} alternatives
         </Text>

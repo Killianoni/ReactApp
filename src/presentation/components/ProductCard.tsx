@@ -23,11 +23,17 @@ export const ProductCard = ({ product, onPress, onFavorite, isFavorite, index, c
   const scaleAnim = React.useRef(new Animated.Value(0.8)).current;
   const opacityAnim = React.useRef(new Animated.Value(0)).current;
 
-  // Don't render if product name is unknown
+  // Skip rendering products without any display name
   if (!product.product_name_fr && !product.product_name_en) {
     return null;
   }
 
+  /**
+   * Entrance animation sequence:
+   * 1. Staggered delay based on item index
+   * 2. Parallel scale up + fade in animation
+   * 3. Spring physics for natural movement
+   */
   React.useEffect(() => {
     Animated.sequence([
       Animated.delay(index * 100),
@@ -48,9 +54,14 @@ export const ProductCard = ({ product, onPress, onFavorite, isFavorite, index, c
   }, []);
 
   return (
+    /**
+     * Main card container with conditional compact layout:
+     * - Default: Responsive width with margins
+     * - Compact: Full width for horizontal lists
+     */
     <Animated.View style={[
       styles.container,
-      compact && { width: '100%' } // Apply compact-specific styles
+      compact && { width: '100%' }
     ]}>
       <TouchableOpacity 
         style={[

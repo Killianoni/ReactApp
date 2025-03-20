@@ -16,6 +16,15 @@ import { useFavorites } from '../src/presentation/hooks/useFavorites';
 import { useSearch } from '../src/presentation/hooks/useSearch';
 import { useTheme } from '../src/presentation/hooks/useTheme';  // Update import path
 
+/**
+ * Search Screen - Core product discovery interface
+ * 
+ * Features:
+ * - Instant search-as-you-type functionality
+ * - Smooth loading animations
+ * - Favorites integration
+ * - Theme-aware styling
+ */
 export default function Search() {
   const colors = useTheme();
   const [query, setQuery] = useState('');
@@ -66,29 +75,38 @@ export default function Search() {
     },
   });
 
+  // Initialize entrance animation
   React.useEffect(() => {
     Animated.spring(scaleAnim, {
       toValue: 1,
-      tension: 20,
-      friction: 7,
+      tension: 20,  // Controls speed
+      friction: 7,  // Affects bounce
       useNativeDriver: true,
     }).start();
   }, []);
 
+  /**
+ * Handles search input with debouncing and animation:
+ * 1. Updates search query
+ * 2. Resets animation values
+ * 3. Triggers product search
+ * 4. Plays loading indicator fade sequence
+ */
   const handleSearch = (text: string) => {
     setQuery(text);
-    fadeAnim.setValue(0);
+    fadeAnim.setValue(0);  // Reset animation
     searchProducts(text);
     
+    // Loading indicator animation sequence
     Animated.sequence([
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 150,
+        duration: 150,  // Quick fade out
         useNativeDriver: true,
       }),
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 300,
+        duration: 300,  // Smooth fade in
         useNativeDriver: true,
       })
     ]).start();

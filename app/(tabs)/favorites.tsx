@@ -18,10 +18,17 @@ export default function Favorites() {
   const glowAnim = React.useRef(new Animated.Value(0)).current;
   const [isEmptyState, setIsEmptyState] = useState(false);
 
+  // Sync empty state with favorites changes
   useEffect(() => {
     setIsEmptyState(favorites.length === 0);
   }, [favorites]);
 
+  /**
+   * Heartbeat animation controller for empty state:
+   * 1. Parallel scale and glow animations
+   * 2. Continuous loop while empty
+   * 3. Spring-based physics for natural motion
+   */
   useEffect(() => {
     if (isEmptyState) {
       const startBeatingAnimation = () => {
@@ -64,7 +71,13 @@ export default function Favorites() {
   }, [isEmptyState]);
 
   useEffect(() => {
-    const loadFavoriteProducts = async () => {
+    /**
+   * Favorite products data loader:
+   * 1. Fetches full product details from repository
+   * 2. Automatically prunes invalid favorites
+   * 3. Handles network errors gracefully
+   */
+  const loadFavoriteProducts = async () => {
       setLoading(true);
       try {
         const productRepo = ProductRepository.getInstance();
